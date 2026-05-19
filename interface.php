@@ -341,7 +341,7 @@ function get_last_viewed() {
  * @param int $limit Restrict result set to this amount
  * @return array
  */
-function get_last_viewed_courses(int $userid = null, int $limit = 0) {
+function get_last_viewed_courses(?int $userid = null, int $limit = 0) {
     global $CFG, $USER, $DB;
 
     if (empty($userid)) {
