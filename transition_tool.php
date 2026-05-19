@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * CustomCourseMenu Transition Tool
  *
@@ -28,11 +29,11 @@ require_login();
 echo $OUTPUT->header();
 
 try {
-    $dataobjects1 = $DB->get_records_sql('SELECT * FROM {block_my_courses}', array());
-    $dataobjects2 = $DB->get_records_sql('SELECT * FROM {block_my_courses_meta}', array());
+    $dataobjects1 = $DB->get_records_sql('SELECT * FROM {block_my_courses}', []);
+    $dataobjects2 = $DB->get_records_sql('SELECT * FROM {block_my_courses_meta}', []);
     $DB->insert_records('block_custom_course_menu', $dataobjects1);
     $DB->insert_records('block_custom_course_menu_etc', $dataobjects2);
-    $DB->set_field('block_instances', 'blockname', 'custom_course_menu', array('blockname' => 'my_courses'));
+    $DB->set_field('block_instances', 'blockname', 'custom_course_menu', ['blockname' => 'my_courses']);
     echo $OUTPUT->container('Transition Completed');
 } catch (Exception $e) {
     echo $OUTPUT->container('Transition has already occured');

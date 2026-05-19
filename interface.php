@@ -43,7 +43,7 @@ $visibleicon = '<i class="fa fa-eye"></i>'; // Visible course icon.
 $favonicon = '<i class="fa fa-plus"></i>'; // Add to favorites icon.
 $favofficon = '<i class="fa fa-minus"></i>'; // Remove from favorites icon.
 
-$categories = array();
+$categories = [];
 $configs = get_config('block_custom_course_menu');
 if (!empty($configs->enablefavorites)) {
     $favorites = get_my_favorites();
@@ -71,10 +71,10 @@ foreach ($categories as $category) {
         continue;
     }
 
-    $params = array(
+    $params = [
         'userid' => $USER->id,
         'categoryid' => $category->id,
-    );
+    ];
 
     $collapsed = $DB->get_field('block_custom_course_menu', 'collapsed', $params);
     $collapsedcss = 'collapsed';
@@ -87,30 +87,32 @@ foreach ($categories as $category) {
     $switchicon = ${$switch . 'icon'};
 
     $url = new moodle_url('/blocks/custom_course_menu/ajax/toggle.php', $params);
-    $anchor = html_writer::link($url, $switchicon, array(
+    $anchor = html_writer::link($url, $switchicon, [
         'class' => "category_switcher $switch",
-    ));
+    ]);
 
     $hide = $move = $hiddenswitch = '';
 
     if ($editing) {
-        $move = html_writer::tag('span', '<i class="fa fa-arrows"></i>', array(
+        $move = html_writer::tag('span', '<i class="fa fa-arrows"></i>', [
             'class' => "handle",
-        ));
+        ]);
         $hiddenswitch = !empty($category->meta->hide) ? 'inconspicuous' : 'visible';
         $switchicon = ${$hiddenswitch . 'icon'};
 
         $url = new moodle_url('/blocks/custom_course_menu/ajax/visible.php', $params);
-        $hide = html_writer::link($url, $switchicon, array(
+        $hide = html_writer::link($url, $switchicon, [
             'class' => "item_tool item_visibility $hiddenswitch",
-        ));
+        ]);
         $hide .= ' ';
     }
 
     $catclass = strlen($category->name) >= 24 ? 'scrollable' : '';
-    $categoryname = html_writer::tag('span',
-                                     html_writer::tag('span', $category->name),
-                                     array('class' => $catclass));
+    $categoryname = html_writer::tag(
+        'span',
+        html_writer::tag('span', $category->name),
+        ['class' => $catclass]
+    );
     $html .= "<li class='custom_course_menu_category $hiddenswitch'>$move $anchor $categoryname $hide";
     $html .= '<ul class="custom_course_menu_list ' . $hiddenswitch . ' ' .
                                                      $collapsedcss .
@@ -122,31 +124,31 @@ foreach ($categories as $category) {
 
         $hide = $fav = $hiddenswitch = $favswitch = '';
         if ($editing) {
-            $url = new moodle_url('/blocks/custom_course_menu/ajax/visible.php', array(
+            $url = new moodle_url('/blocks/custom_course_menu/ajax/visible.php', [
                 'userid' => $USER->id,
                 'courseid' => $course->id,
-            ));
+            ]);
 
             $hiddenswitch = !empty($course->meta->hide) ? 'inconspicuous' : 'visible';
             $switchicon = ${$hiddenswitch . 'icon'};
 
-            $hide = html_writer::link($url, $switchicon, array(
+            $hide = html_writer::link($url, $switchicon, [
                 'class' => "item_tool item_visibility $hiddenswitch",
-            ));
+            ]);
             $hide .= ' ';
 
-            $url = new moodle_url('/blocks/custom_course_menu/ajax/favorite.php', array(
+            $url = new moodle_url('/blocks/custom_course_menu/ajax/favorite.php', [
                 'userid' => $USER->id,
                 'courseid' => $course->id,
-            ));
+            ]);
 
             if (!empty($configs->enablefavorites)) {
                 $favswitch = empty($course->meta->fav) ? 'favon' : 'favoff';
                 $switchicon = ${$favswitch . 'icon'};
 
-                $fav = html_writer::link($url, $switchicon, array(
+                $fav = html_writer::link($url, $switchicon, [
                     'class' => "item_tool item_favorite $favswitch",
-                ));
+                ]);
             }
 
             if ($category->id === -1) {
@@ -164,55 +166,60 @@ foreach ($categories as $category) {
         $class .= !$course->visible ? ' dimmed' : '';
         $class .= strlen($course->fullname) >= 22 ? ' scrollable' : '';
 
-        $url = new moodle_url('/course/view.php', array('id' => $course->id));
-        $anchor = html_writer::link($url,
-                                    html_writer::tag('span', $course->fullname),
-                                    array('class' => $class));
+        $url = new moodle_url('/course/view.php', ['id' => $course->id]);
+        $anchor = html_writer::link(
+            $url,
+            html_writer::tag('span', $course->fullname),
+            ['class' => $class]
+        );
         $move = $category->id === -2 ? '' : $move;
-        $content = "$move $anchor ".$hide.$fav;
-        $html .= html_writer::tag('li', $content, array(
+        $content = "$move $anchor " . $hide . $fav;
+        $html .= html_writer::tag('li', $content, [
             'class' => "custom_course_menu_course $hiddenswitch",
-        ));
+        ]);
     }
 
     $html .= '</ul>';
     $html .= '</li>';
 }
 
-$url = new moodle_url('/blocks/custom_course_menu/ajax/sort.php', array(
-    'userid' => $USER->id,
-));
+$url = new moodle_url(
+    '/blocks/custom_course_menu/ajax/sort.php',
+    [
+        'userid' => $USER->id,
+    ]
+);
 
 $html .= '</ul>'
       .
-      html_writer::tag('span', $plusicon, array(
+      html_writer::tag('span', $plusicon, [
           'id' => 'custom_course_menu_plus',
           'style' => 'display: none;',
-      )) .
-      html_writer::tag('span', $minusicon, array(
+      ]) .
+      html_writer::tag('span', $minusicon, [
           'id' => 'custom_course_menu_minus',
           'style' => 'display: none;',
-      )) .
-      html_writer::tag('span', $visibleicon, array(
+      ]) .
+      html_writer::tag('span', $visibleicon, [
           'id' => 'custom_course_menu_visible',
           'style' => 'display: none;',
-      )) .
-      html_writer::tag('span', $inconspicuousicon, array(
+      ]) .
+      html_writer::tag('span', $inconspicuousicon, [
           'id' => 'custom_course_menu_inconspicuous',
           'style' => 'display: none;',
-      )) .
-      html_writer::tag('span', $url->out(), array(
+      ]) .
+      html_writer::tag('span', $url->out(), [
           'id' => 'custom_course_menu_sort',
           'style' => 'display: none;',
-      )) .
-      html_writer::tag('span', $favonicon, array(
+      ]) .
+      html_writer::tag('span', $favonicon, [
           'id' => 'custom_course_menu_favon',
           'style' => 'display: none;',
-      )) .
-      html_writer::tag('span', $favofficon, array(
+      ]) .
+      html_writer::tag('span', $favofficon, [
           'id' => 'custom_course_menu_favoff',
           'style' => 'display: none;',
-      ));
+      ]);
 
 echo $html;
 
@@ -229,18 +236,18 @@ function get_category_tree() {
 
     $courses = enrol_get_all_users_courses($USER->id, true);
 
-    $categories = array();
+    $categories = [];
     foreach ($courses as $course) {
         if ($course->visible == 1 || has_capability('moodle/course:viewhiddencourses', context_course::instance($course->id))) {
             if (!isset($categories[$course->category])) {
-                $params = array('id' => $course->category);
+                $params = ['id' => $course->category];
                 $category = $DB->get_record('course_categories', $params);
-                $category->courses = array();
+                $category->courses = [];
 
                 if (isset($categorymeta[$category->id])) {
                     $category->meta = $categorymeta[$category->id];
                 } else {
-                    $category->meta = (object) array('hide' => 0);
+                    $category->meta = (object) ['hide' => 0];
                 }
 
                 $categories[$course->category] = $category;
@@ -249,7 +256,7 @@ function get_category_tree() {
             if (isset($coursemeta[$course->id])) {
                 $course->meta = $coursemeta[$course->id];
             } else {
-                $course->meta = (object) array('hide' => 0, 'fav' => 0);
+                $course->meta = (object) ['hide' => 0, 'fav' => 0];
             }
 
             $categories[$course->category]->courses[$course->id] = $course;
@@ -266,7 +273,7 @@ function get_category_tree() {
  * @return array
  */
 function sort_my_categories($categories) {
-    uasort($categories, function($cata, $catb) {
+    uasort($categories, function ($cata, $catb) {
         if (isset($cata->meta->sortorder) && isset($catb->meta->sortorder)) {
             return $cata->meta->sortorder < $catb->meta->sortorder ? -1 : 1;
         } else if (isset($cata->meta->sortorder)) {
@@ -279,7 +286,7 @@ function sort_my_categories($categories) {
     });
 
     foreach ($categories as $category) {
-        uasort($category->courses, function($coursea, $courseb) {
+        uasort($category->courses, function ($coursea, $courseb) {
             if (isset($coursea->meta->sortorder) && isset($courseb->meta->sortorder)) {
                 return $coursea->meta->sortorder < $courseb->meta->sortorder ? -1 : 1;
             } else if (isset($coursea->meta->sortorder)) {
@@ -302,13 +309,13 @@ function sort_my_categories($categories) {
  */
 function get_last_viewed() {
     global $CFG, $DB, $USER;
-    require_once($CFG->dirroot.'/course/lib.php');
+    require_once($CFG->dirroot . '/course/lib.php');
     $categorymeta = get_meta_for('category');
     $lva = get_config('block_custom_course_menu')->lastviewedamount;
 
     $courses = get_last_viewed_courses($USER->id, $lva);
 
-    $categories = array();
+    $categories = [];
     $order = 1;
     foreach ($courses as $course) {
         if ($course->visible == 1 || has_capability('moodle/course:viewhiddencourses', context_course::instance($course->id))) {
@@ -316,17 +323,17 @@ function get_last_viewed() {
                 $category = new stdClass();
                 $category->name = get_string('lastxviewed', 'block_custom_course_menu', $lva);
                 $category->id = -2;
-                $category->courses = array();
+                $category->courses = [];
 
                 if (isset($categorymeta[-2])) {
                     $category->meta = $categorymeta[-2];
                 } else {
-                    $category->meta = (object) array('hide' => 0, 'sortorder' => 1);
+                    $category->meta = (object) ['hide' => 0, 'sortorder' => 1];
                 }
 
                 $categories[-2] = $category;
             }
-            $course->meta = (object) array('hide' => 0, 'sortorder' => $order);
+            $course->meta = (object) ['hide' => 0, 'sortorder' => $order];
             $order++;
             $categories[-2]->courses[$course->id] = $course;
         }
@@ -377,12 +384,12 @@ function get_my_favorites() {
     global $DB, $USER;
 
     // Cleanup favorites.
-    $rs = $DB->get_recordset('block_custom_course_menu_etc', array("userid" => $USER->id, "fav" => 1));
+    $rs = $DB->get_recordset('block_custom_course_menu_etc', ['userid' => $USER->id, 'fav' => 1]);
     foreach ($rs as $record) {
-        $params = array(
+        $params = [
             'userid' => $record->userid,
-            'itemid' => $record->itemid
-        );
+            'itemid' => $record->itemid,
+        ];
         if (!is_enrolled(context_course::instance($record->itemid), $USER)) {
             $DB->delete_records('block_custom_course_menu_etc', $params);
         }
@@ -393,19 +400,19 @@ function get_my_favorites() {
     $coursemeta = get_meta_for('favorite', 1);
     $sql = "SELECT c.* FROM {course} c JOIN {block_custom_course_menu_etc} s ON s.itemid = c.id WHERE s.userid = :userid
             AND s.item = :fav ORDER BY s.sortorder";
-    $courses = $DB->get_records_sql($sql, array('userid' => $USER->id, 'fav' => "favorite"));
-    $categories = array();
+    $courses = $DB->get_records_sql($sql, ['userid' => $USER->id, 'fav' => "favorite"]);
+    $categories = [];
     foreach ($courses as $course) {
         if (!isset($categories[-1])) {
             $category = new stdClass();
             $category->name = get_string('favorites', 'block_custom_course_menu');
             $category->id = -1;
-            $category->courses = array();
+            $category->courses = [];
 
             if (isset($categorymeta[-1])) {
                 $category->meta = $categorymeta[-1];
             } else {
-                $category->meta = (object) array('hide' => 0, 'sortorder' => 0);
+                $category->meta = (object) ['hide' => 0, 'sortorder' => 0];
             }
 
             $categories[-1] = $category;
@@ -415,7 +422,7 @@ function get_my_favorites() {
             $meta = $coursemeta[$course->id];
             $course->meta = $meta;
         } else {
-            $course->meta = (object) array('hide' => 0);
+            $course->meta = (object) ['hide' => 0];
         }
 
         $categories[-1]->courses[$course->id] = $course;
@@ -438,8 +445,11 @@ function get_meta_for($item) {
          . "WHERE userid = :userid "
          . "AND item = :item";
 
-    return $DB->get_records_sql($sql, array(
-        'item' => $item,
-        'userid' => $USER->id,
-    ));
+    return $DB->get_records_sql(
+        $sql,
+        [
+            'item' => $item,
+            'userid' => $USER->id,
+        ]
+    );
 }

@@ -34,20 +34,20 @@ use block_custom_course_menu\privacy\provider;
  * @covers     \block_custom_course_menu\provider
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class provider_test extends \core_privacy\tests\provider_testcase {
-
+final class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Basic setup for these tests.
      */
     public function setUp(): void {
         $this->resetAfterTest(true);
+        parent::setUp();
     }
 
     /**
      * Test get_contexts_for_userid function.
      * Function that get the list of contexts that contain user information for the specified user.
      */
-    public function test_get_contexts_for_userid() {
+    public function test_get_contexts_for_userid(): void {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
@@ -68,7 +68,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      * Test expert_user_data function.
      * Function that get the list of users who have data within a context.
      */
-    public function test_export_user_data() {
+    public function test_export_user_data(): void {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
@@ -79,14 +79,23 @@ class provider_test extends \core_privacy\tests\provider_testcase {
         $writer = \core_privacy\local\request\writer::with_context($usercontext);
         $this->assertFalse($writer->has_any_data());
 
-        list($category1, $category2, $category3, $course1, $course2, $course3) = $this->create_coursecat_and_enrol_set_block($user);
+        [$category1, $category2, $category3, $course1, $course2, $course3] = $this->create_coursecat_and_enrol_set_block($user);
         $this->export_context_data_for_user($user->id, $usercontext, 'block_custom_course_menu');
         $writer = \core_privacy\local\request\writer::with_context($usercontext);
         $this->assertTrue($writer->has_any_data());
 
-        $data = $writer->get_data([get_string('pluginname', 'block_custom_course_menu'),
-                                   get_string('privacy:metadata:block_custom_course_menu:block_custom_course_menu:textcontext',
-                                              'block_custom_course_menu')]);
+        $data = $writer->get_data(
+            [
+                get_string(
+                    'pluginname',
+                    'block_custom_course_menu'
+                ),
+                get_string(
+                    'privacy:metadata:block_custom_course_menu:block_custom_course_menu:textcontext',
+                    'block_custom_course_menu'
+                ),
+            ]
+        );
         $this->assertInstanceOf('stdClass', $data);
         $this->assertTrue(property_exists($data, 'block_custom_course_menu'));
         foreach ($data->block_custom_course_menu as $record) {
@@ -95,9 +104,18 @@ class provider_test extends \core_privacy\tests\provider_testcase {
             $this->assertEquals("1", $record->collapsed);
         }
 
-        $data = $writer->get_data([get_string('pluginname', 'block_custom_course_menu'),
-                                   get_string('privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:textcontext',
-                                              'block_custom_course_menu')]);
+        $data = $writer->get_data(
+            [
+                get_string(
+                    'pluginname',
+                    'block_custom_course_menu'
+                ),
+                get_string(
+                    'privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:textcontext',
+                    'block_custom_course_menu'
+                ),
+            ]
+        );
         $this->assertInstanceOf('stdClass', $data);
         $this->assertTrue(property_exists($data, 'block_custom_course_menu_etc'));
         foreach ($data->block_custom_course_menu_etc as $record) {
@@ -110,7 +128,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      * Test delete_data_for_all_users_in_context function.
      * Function that delete all data for all users in the specified context
      */
-    public function test_delete_data_for_all_users_in_context() {
+    public function test_delete_data_for_all_users_in_context(): void {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
@@ -127,7 +145,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      * Test delete_data_for_user function.
      * Function that delete all user data for the specified user, in the specified contexts.
      */
-    public function test_delete_data_for_user() {
+    public function test_delete_data_for_user(): void {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
@@ -136,9 +154,9 @@ class provider_test extends \core_privacy\tests\provider_testcase {
         $this->create_block_instance();
         // Delete the context.
         $approvedcontextlist = new \core_privacy\tests\request\approved_contextlist(
-                \core_user::get_user($user->id),
-                'block_custom_course_menu',
-                [$usercontext->id]
+            \core_user::get_user($user->id),
+            'block_custom_course_menu',
+            [$usercontext->id]
         );
         provider::delete_data_for_user($approvedcontextlist);
         $contextlist = provider::get_contexts_for_userid($user->id);
@@ -149,7 +167,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      * Test delete_data_for_users function.
      * Function that Delete multiple users within a single context.
      */
-    public function test_delete_data_for_users() {
+    public function test_delete_data_for_users(): void {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
@@ -169,7 +187,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     private function create_block_instance() {
         global $SITE;
         $blockgenerator = $this->getDataGenerator()->get_plugin_generator('block_custom_course_menu');
-        $blockgenerator->create_instance(array('course' => $SITE));
+        $blockgenerator->create_instance(['course' => $SITE]);
     }
 
     /**
@@ -192,6 +210,6 @@ class provider_test extends \core_privacy\tests\provider_testcase {
         $blockgenerator->set_course_visible($user->id, $category1->id, false, false);
         $blockgenerator->set_course_visible($user->id, $course1->id, true, true);
         $blockgenerator->set_collapsed_category($user->id, $category3->id, true);
-        return array($category1, $category2, $category3, $course1, $course2, $course3);
+        return [$category1, $category2, $category3, $course1, $course2, $course3];
     }
 }

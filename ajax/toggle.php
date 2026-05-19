@@ -34,10 +34,10 @@ if (!isloggedin()) {
 $catid = required_param('categoryid', PARAM_NOTAGS);
 $userid = $USER->id;
 
-$params = array(
+$params = [
   'userid' => $userid,
-  'categoryid' => $catid
-);
+  'categoryid' => $catid,
+];
 
 $entry = $DB->get_record('block_custom_course_menu', $params);
 
@@ -46,11 +46,11 @@ if ($entry) {
 
     $DB->update_record('block_custom_course_menu', $entry);
 } else {
-    $entry = new stdClass;
+    $entry = new stdClass();
     $entry->userid = $userid;
     $entry->categoryid = $catid;
     $entry->collapsed = 1;
 
     $DB->insert_record('block_custom_course_menu', $entry);
 }
-echo json_encode(array(true));
+echo json_encode([true]);

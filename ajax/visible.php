@@ -47,11 +47,11 @@ if ($categoryid) {
     $item = 'course';
 }
 
-$params = array(
+$params = [
     'userid' => $userid,
     'item' => $item,
     'itemid' => $itemid,
-);
+];
 
 $entry = $DB->get_record('block_custom_course_menu_etc', $params);
 
@@ -64,4 +64,4 @@ if ($entry) {
 
     $DB->insert_record('block_custom_course_menu_etc', $entry);
 }
-echo json_encode(array(true));
+echo json_encode([true]);

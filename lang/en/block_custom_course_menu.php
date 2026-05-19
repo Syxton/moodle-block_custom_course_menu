@@ -22,19 +22,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Custom Course Menu';
-$string['course'] = 'Course';
-
-$string['custom_course_menu:addinstance'] = 'The ability to add on Site page';
-$string['custom_course_menu:myaddinstance'] = 'The ability to add on the My page';
-
 $string['adminonly'] = 'Admin Only';
 $string['configenablefavorites'] = 'Adds a section that displays the users selected favorites.';
 $string['configenablelastviewed'] = 'Adds a section that displays the last courses the user has visited.';
 $string['configlastviewedamount'] = 'Adjusts the maximum amount of courses to be displayed in the last viewed section.';
 $string['configshowsearch'] = 'Adds a course search box to the bottom of the menu.';
-$string['editingon'] = 'Finish Editing ';
+$string['course'] = 'Course';
+$string['custom_course_menu:addinstance'] = 'The ability to add on Site page';
+$string['custom_course_menu:myaddinstance'] = 'The ability to add on the My page';
 $string['editingoff'] = 'Start Editing ';
+$string['editingon'] = 'Finish Editing ';
 $string['enablefavorites'] = 'Favorite courses section';
 $string['enablelastviewed'] = 'Last viewed courses section';
 $string['favorites'] = 'Favorites';
@@ -42,21 +39,22 @@ $string['lastviewedamount'] = 'Last viewed amount';
 $string['lastxviewed'] = 'Last {$a} Viewed';
 $string['loading'] = 'Loading...';
 $string['nocourses'] = 'You are not enrolled in any courses.';
-$string['showsearch'] = 'Show course search';
+$string['pluginname'] = 'Custom Course Menu';
 
-// Privacy strings.
 $string['privacy:metadata:block_custom_course_menu:block_custom_course_menu'] = 'Track collapsed/expanded status for a category per user. Store user preferences for the custom menu block';
-$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu:id'] = 'Internal unique id';
-$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu:userid'] = 'Userid concerned with this collapse/expanded category status';
 $string['privacy:metadata:block_custom_course_menu:block_custom_course_menu:categoryid'] = 'The category id collapse or expanded for a given user';
 $string['privacy:metadata:block_custom_course_menu:block_custom_course_menu:collapsed'] = 'The collapsed/expanded status for a given user and a given category. 1 for collapsed, 0 for expanded';
-$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc'] = 'User preferences for custom menu containing hide, and sortorder info per user per course / category';
-$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:id'] = 'Internal user id for this entry';
-$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:userid'] = 'The concerned user for this entry';
-$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:category'] = 'The category concerned by the hide,sortorder info for a given user';
-$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:itemid'] = 'The itemid for a course or a course category concerned by the hide,sortorder info for a given user';
-$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:hide'] = 'The item nature (category or course) concerned by the hide,sortorder info for a given user';
-$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:sortorder'] = 'The sortorder nulber for the concerned item (category or course) for a given user';
-$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:fav'] = 'The favorite tag for a given itemid (category/course) for a given user';
+$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu:id'] = 'Internal unique id';
 $string['privacy:metadata:block_custom_course_menu:block_custom_course_menu:textcontext'] = 'collapsed or expanded status';
+$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu:userid'] = 'Userid concerned with this collapse/expanded category status';
+$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc'] = 'User preferences for custom menu containing hide, and sortorder info per user per course / category';
+$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:category'] = 'The category concerned by the hide,sortorder info for a given user';
+$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:fav'] = 'The favorite tag for a given itemid (category/course) for a given user';
+$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:hide'] = 'The item nature (category or course) concerned by the hide,sortorder info for a given user';
+$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:id'] = 'Internal user id for this entry';
+$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:itemid'] = 'The itemid for a course or a course category concerned by the hide,sortorder info for a given user';
+$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:sortorder'] = 'The sortorder nulber for the concerned item (category or course) for a given user';
 $string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:textcontext'] = 'hide and sortorder infos';
+$string['privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:userid'] = 'The concerned user for this entry';
+
+$string['showsearch'] = 'Show course search';

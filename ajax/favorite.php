@@ -38,12 +38,12 @@ if ((empty($courseid) && empty($userid))) {
     die();
 }
 
-$params = array(
+$params = [
     'userid' => $userid,
     'item' => 'course',
     'itemid' => $courseid,
-    'fav' => 1
-);
+    'fav' => 1,
+];
 
 $entry = $DB->get_record('block_custom_course_menu_etc', $params);
 
@@ -51,11 +51,11 @@ if ($entry) { // Favorite "course" row exists, remove as favorite.
     $entry->fav = 0;
     $DB->update_record('block_custom_course_menu_etc', $entry);
 
-    $params = array(
+    $params = [
         'userid' => $userid,
         'item' => 'favorite',
-        'itemid' => $courseid
-    );
+        'itemid' => $courseid,
+    ];
     $DB->delete_records('block_custom_course_menu_etc', $params);
 } else { // Favorite "course" does not exist, add as favorite.
     $entry = (object) $params;
@@ -79,4 +79,4 @@ if ($entry) { // Favorite "course" row exists, remove as favorite.
         $DB->insert_record('block_custom_course_menu_etc', $entry);
     }
 }
-echo json_encode(array(true));
+echo json_encode([true]);

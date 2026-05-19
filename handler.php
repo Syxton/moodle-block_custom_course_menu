@@ -31,7 +31,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class custom_course_menu_handler {
-
     /**
      * Event handler to clean up block entries on user deletes
      *
@@ -41,8 +40,8 @@ abstract class custom_course_menu_handler {
     public static function user_deleted($user) {
         global $DB;
         return (
-            $DB->delete_records('block_custom_course_menu', array('userid' => $user->id)) &&
-            $DB->delete_records('block_custom_course_menu_etc', array('userid' => $user->id))
+            $DB->delete_records('block_custom_course_menu', ['userid' => $user->id]) &&
+            $DB->delete_records('block_custom_course_menu_etc', ['userid' => $user->id])
         );
     }
 
@@ -54,10 +53,10 @@ abstract class custom_course_menu_handler {
      */
     public static function course_deleted($course) {
         global $DB;
-        return $DB->delete_records('block_custom_course_menu_etc', array(
+        return $DB->delete_records('block_custom_course_menu_etc', [
             'item' => 'course',
             'itemid' => $course->id,
-        ));
+        ]);
     }
 
     /**
@@ -70,11 +69,11 @@ abstract class custom_course_menu_handler {
         global $DB;
 
         return (
-            $DB->delete_records('block_custom_course_menu', array('categoryid' => $category->id)) &&
-            $DB->delete_records('block_custom_course_menu_etc', array(
+            $DB->delete_records('block_custom_course_menu', ['categoryid' => $category->id]) &&
+            $DB->delete_records('block_custom_course_menu_etc', [
                 'item' => 'category',
                 'itemid' => $category->id,
-            ))
+            ])
         );
     }
 }

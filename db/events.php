@@ -25,36 +25,36 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($CFG->version < 2015111600) { // If not using Moodle 3.0+.
-    $mapper = function($event) {
-        return array(
+    $mapper = function ($event) {
+        return [
             'handlerfile' => '/blocks/custom_course_menu/handler.php',
-            'handlerfunction' => array('custom_course_menu_handler', $event),
+            'handlerfunction' => ['custom_course_menu_handler', $event],
             'schedule' => 'instant',
-        );
+        ];
     };
 
-    $events = array(
+    $events = [
         'course_deleted',
         'course_category_deleted',
         'user_deleted',
-    );
+    ];
 
     $handlers = array_combine($events, array_map($mapper, $events));
     exit;
 }
 
 // Events 2.1 API version.
-$observers = array (
-    array (
+$observers = [
+    [
         'eventname' => '\core\event\course_deleted',
         'callback'  => 'block_custom_course_menu\observers::course_deleted',
-    ),
-    array (
+    ],
+    [
         'eventname' => '\core\event\course_category_deleted',
         'callback'  => 'block_custom_course_menu\observers::course_category_deleted',
-    ),
-    array (
+    ],
+    [
         'eventname' => '\core\event\user_deleted',
         'callback'  => 'block_custom_course_menu\observers::user_deleted',
-    ),
-);
+    ],
+];
