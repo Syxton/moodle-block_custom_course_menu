@@ -39,15 +39,15 @@ $sortorder = explode(',', $sortorder);
 
 // Prepare parameters for furture sql query.
 $ids = array_values($ids);
-$params = array($type, $userid);
-list($sqlidstest, $idsparams) = $DB->get_in_or_equal($ids);
+$params = [$type, $userid];
+[$sqlidstest, $idsparams] = $DB->get_in_or_equal($ids);
 $params = array_merge($params, $idsparams);
-$sqlidstest = ' AND itemid ' .$sqlidstest;
+$sqlidstest = ' AND itemid ' . $sqlidstest;
 
 $sql = 'SELECT itemid, id, item, sortorder, hide '
      . 'FROM {block_custom_course_menu_etc} '
      . 'WHERE item = ? '
-     . ' AND userid = ? ' .$sqlidstest;
+     . ' AND userid = ? ' . $sqlidstest;
 
 $entries = $DB->get_records_sql($sql, $params);
 
@@ -55,7 +55,7 @@ foreach ($ids as $index => $id) {
     if (isset($entries[$id])) {
         $entry = $entries[$id];
     } else {
-        $entry = new stdClass;
+        $entry = new stdClass();
         $entry->hide = 0;
         $entry->item = $type;
     }
@@ -69,4 +69,4 @@ foreach ($ids as $index => $id) {
         $DB->insert_record('block_custom_course_menu_etc', $entry);
     }
 }
-echo json_encode(array(true));
+echo json_encode([true]);

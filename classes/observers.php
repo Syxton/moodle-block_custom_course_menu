@@ -39,8 +39,8 @@ class observers {
      */
     public static function user_deleted(\core\event\user_deleted $event) {
         global $DB;
-        $DB->delete_records('block_custom_course_menu', array('userid' => $event->userid));
-        $DB->delete_records('block_custom_course_menu_etc', array('userid' => $event->userid));
+        $DB->delete_records('block_custom_course_menu', ['userid' => $event->userid]);
+        $DB->delete_records('block_custom_course_menu_etc', ['userid' => $event->userid]);
     }
 
     /**
@@ -51,15 +51,15 @@ class observers {
      */
     public static function course_deleted(\core\event\course_deleted $event) {
         global $DB;
-        $DB->delete_records('block_custom_course_menu_etc', array(
+        $DB->delete_records('block_custom_course_menu_etc', [
             'item' => 'course',
             'itemid' => $event->courseid,
-        ));
+        ]);
 
-        $DB->delete_records('block_custom_course_menu_etc', array(
+        $DB->delete_records('block_custom_course_menu_etc', [
             'item' => 'favorite',
             'itemid' => $event->courseid,
-        ));
+        ]);
     }
 
     /**
@@ -70,10 +70,10 @@ class observers {
      */
     public static function course_category_deleted(\core\event\course_category_deleted $event) {
         global $DB;
-        $DB->delete_records('block_custom_course_menu', array('categoryid' => $event->objectid));
-        $DB->delete_records('block_custom_course_menu_etc', array(
+        $DB->delete_records('block_custom_course_menu', ['categoryid' => $event->objectid]);
+        $DB->delete_records('block_custom_course_menu_etc', [
             'item' => 'category',
             'itemid' => $event->objectid,
-        ));
+        ]);
     }
 }

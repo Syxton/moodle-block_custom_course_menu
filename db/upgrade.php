@@ -38,7 +38,7 @@ function xmldb_block_custom_course_menu_upgrade($oldversion) {
         // The categoryid field should be an integer.  To change this, we will create a new field to hold the data.
         // The preexisting field will be renamed and the contents will be copied out.
         $table = new xmldb_table('block_custom_course_menu');
-        $index = new xmldb_index('usercat', XMLDB_INDEX_UNIQUE, array('userid', 'categoryid'));
+        $index = new xmldb_index('usercat', XMLDB_INDEX_UNIQUE, ['userid', 'categoryid']);
         $origfield = new xmldb_field('categoryid', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, null, 'userid');
         $newfield = new xmldb_field('categoryid', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, 0, 'userid');
 
@@ -61,11 +61,11 @@ function xmldb_block_custom_course_menu_upgrade($oldversion) {
         $rs = $DB->get_recordset('block_custom_course_menu');
         foreach ($rs as $record) {
             if (is_numeric($record->categoryid_depr)) {
-                $DB->set_field('block_custom_course_menu', 'categoryid', $record->categoryid_depr, array('id' => $record->id));
+                $DB->set_field('block_custom_course_menu', 'categoryid', $record->categoryid_depr, ['id' => $record->id]);
             } else if ($record->categoryid_depr === "favs") {
-                $DB->set_field('block_custom_course_menu', 'categoryid', -1, array('id' => $record->id));
+                $DB->set_field('block_custom_course_menu', 'categoryid', -1, ['id' => $record->id]);
             } else if ($record->categoryid_depr === "lastviewed") {
-                $DB->set_field('block_custom_course_menu', 'categoryid', -2, array('id' => $record->id));
+                $DB->set_field('block_custom_course_menu', 'categoryid', -2, ['id' => $record->id]);
             }
         }
         $rs->close(); // Don't forget to close the recordset!
@@ -78,7 +78,7 @@ function xmldb_block_custom_course_menu_upgrade($oldversion) {
         // The itemid field should be an integer.  To change this, we will create a new field to hold the data.
         // The preexisting field will be renamed and the contents will be copied out.
         $table = new xmldb_table('block_custom_course_menu_etc');
-        $index = new xmldb_index('useiteitemid', XMLDB_INDEX_UNIQUE, array('userid', 'item', 'itemid'));
+        $index = new xmldb_index('useiteitemid', XMLDB_INDEX_UNIQUE, ['userid', 'item', 'itemid']);
         $origfield = new xmldb_field('itemid', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, null, 'item');
         $newfield = new xmldb_field('itemid', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, 0, 'item');
 
@@ -101,11 +101,11 @@ function xmldb_block_custom_course_menu_upgrade($oldversion) {
         $rs = $DB->get_recordset('block_custom_course_menu_etc');
         foreach ($rs as $record) {
             if (is_numeric($record->itemid_depr)) {
-                $DB->set_field('block_custom_course_menu_etc', 'itemid', $record->itemid_depr, array('id' => $record->id));
+                $DB->set_field('block_custom_course_menu_etc', 'itemid', $record->itemid_depr, ['id' => $record->id]);
             } else if ($record->itemid_depr === "favs") {
-                $DB->set_field('block_custom_course_menu_etc', 'itemid', -1, array('id' => $record->id));
+                $DB->set_field('block_custom_course_menu_etc', 'itemid', -1, ['id' => $record->id]);
             } else if ($record->itemid_depr === "lastviewed") {
-                $DB->set_field('block_custom_course_menu_etc', 'itemid', -2, array('id' => $record->id));
+                $DB->set_field('block_custom_course_menu_etc', 'itemid', -2, ['id' => $record->id]);
             }
         }
         $rs->close(); // Don't forget to close the recordset!
@@ -121,15 +121,15 @@ function xmldb_block_custom_course_menu_upgrade($oldversion) {
 
     // Changes to favorite storage.
     if ($oldversion < 2018030700) {
-        $rs = $DB->get_recordset('block_custom_course_menu_etc', array("fav" => 1));
+        $rs = $DB->get_recordset('block_custom_course_menu_etc', ['fav' => 1]);
         foreach ($rs as $record) {
-            $params = array(
+            $params = [
                 'userid' => $record->userid,
                 'item' => 'favorite',
                 'itemid' => $record->itemid,
                 'sortorder' => 0,
-                'fav' => 1
-            );
+                'fav' => 1,
+            ];
 
             $entry = (object) $params;
             $DB->insert_record('block_custom_course_menu_etc', $entry);

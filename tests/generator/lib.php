@@ -43,11 +43,11 @@ class block_custom_course_menu_generator extends testing_block_generator {
             $item = 'category';
         }
 
-        $params = array(
-                'userid' => $userid,
-                'item' => $item,
-                'itemid' => $itemid,
-        );
+        $params = [
+            'userid' => $userid,
+            'item' => $item,
+            'itemid' => $itemid,
+        ];
 
         $entry = $DB->get_record('block_custom_course_menu_etc', $params);
 
@@ -55,7 +55,7 @@ class block_custom_course_menu_generator extends testing_block_generator {
             $DB->update_record('block_custom_course_menu_etc', $entry);
         } else {
             $entry = (object) $params;
-            $entry->hide = !$isvisible;;
+            $entry->hide = !$isvisible;
             $DB->insert_record('block_custom_course_menu_etc', $entry);
         }
     }
@@ -69,10 +69,10 @@ class block_custom_course_menu_generator extends testing_block_generator {
      */
     public function set_collapsed_category($userid, $categoryid, $collapsed) {
         global $DB;
-        $params = array(
-                'userid' => $userid,
-                'categoryid' => $categoryid
-        );
+        $params = [
+            'userid' => $userid,
+            'categoryid' => $categoryid,
+        ];
 
         $entry = $DB->get_record('block_custom_course_menu', $params);
 
@@ -81,7 +81,7 @@ class block_custom_course_menu_generator extends testing_block_generator {
 
             $DB->update_record('block_custom_course_menu', $entry);
         } else {
-            $entry = new stdClass;
+            $entry = new stdClass();
             $entry->userid = $userid;
             $entry->categoryid = $categoryid;
             $entry->collapsed = intval($collapsed);
@@ -89,5 +89,4 @@ class block_custom_course_menu_generator extends testing_block_generator {
             $DB->insert_record('block_custom_course_menu', $entry);
         }
     }
-
 }

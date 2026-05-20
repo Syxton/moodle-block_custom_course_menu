@@ -24,20 +24,19 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-    'block/custom_course_menu:myaddinstance' => array(
+$capabilities = [
+    'block/custom_course_menu:myaddinstance' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_BLOCK,
-        'archetypes' => array(
+        'archetypes' => [
             'user' => CAP_ALLOW,
-        )
-    ),
-
-    'block/custom_course_menu:addinstance' => array(
+        ],
+    ],
+    'block/custom_course_menu:addinstance' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_BLOCK,
-        'archetypes' => array(
+        'archetypes' => [
             'user' => CAP_ALLOW,
-        )
-    )
-);
+        ],
+    ],
+];

@@ -33,26 +33,27 @@ use core_privacy\local\request\writer;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements
-        \core_privacy\local\metadata\provider,
-        \core_privacy\local\request\core_userlist_provider,
-        \core_privacy\local\request\plugin\provider {
-
+    \core_privacy\local\metadata\provider,
+    \core_privacy\local\request\core_userlist_provider,
+    \core_privacy\local\request\plugin\provider {
     /**
      * Get the metadata
      * @param collection $collection The initialised collection to add items to.
      * @return collection
      */
-    public static function get_metadata(collection $collection) : collection {
-        $collection->add_database_table('block_custom_course_menu',
+    public static function get_metadata(collection $collection): collection {
+        $collection->add_database_table(
+            'block_custom_course_menu',
             [
                     'id' => 'privacy:metadata:block_custom_course_menu:block_custom_course_menu:id',
                     'userid' => 'privacy:metadata:block_custom_course_menu:block_custom_course_menu:userid',
                     'categoryid' => 'privacy:metadata:block_custom_course_menu:block_custom_course_menu:categoryid',
                     'collapsed' => 'privacy:metadata:block_custom_course_menu:block_custom_course_menu:collapsed',
             ],
-                'privacy:metadata:block_custom_course_menu:block_custom_course_menu'
+            'privacy:metadata:block_custom_course_menu:block_custom_course_menu'
         );
-        $collection->add_database_table('block_custom_course_menu_etc',
+        $collection->add_database_table(
+            'block_custom_course_menu_etc',
             [
                     'id' => 'privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:id',
                     'userid'  => 'privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:userid',
@@ -73,7 +74,7 @@ class provider implements
      * @param   int $userid The user to search.
      * @return  contextlist   $contextlist  The contextlist containing the list of contexts used in this plugin.
      */
-    public static function get_contexts_for_userid(int $userid) : contextlist {
+    public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new \core_privacy\local\request\contextlist();
 
         // The block_community data is associated at the user context level, so retrieve the user's context id.
@@ -91,8 +92,8 @@ class provider implements
         $params = [
                 'contextuser'   => CONTEXT_USER,
                 'userid'        => $userid,
-                'contextuser2'   => CONTEXT_USER,
-                'userid2'        => $userid
+                'contextuser2'  => CONTEXT_USER,
+                'userid2'       => $userid,
         ];
 
         $contextlist->add_from_sql($sql, $params);
@@ -137,25 +138,39 @@ class provider implements
     public static function export_user_data(approved_contextlist $contextlist) {
         global $DB;
         $userid = $contextlist->get_user()->id;
-        $usercontexts = self::validate_contextlist_contexts($contextlist, array(CONTEXT_USER));
+        $usercontexts = self::validate_contextlist_contexts($contextlist, [CONTEXT_USER]);
         if (empty($usercontexts)) {
             return;
         }
         if (!empty($usercontexts)) {
-            $entries = $DB->get_records('block_custom_course_menu', array('userid' => $userid));
+            $entries = $DB->get_records('block_custom_course_menu', ['userid' => $userid]);
             if (!empty($entries)) {
                 $usercontext = $usercontexts[\context_user::instance($userid)->id];
-                $strings = [get_string('pluginname', 'block_custom_course_menu'),
-                            get_string('privacy:metadata:block_custom_course_menu:block_custom_course_menu:textcontext',
-                                       'block_custom_course_menu')];
+                $strings = [
+                    get_string(
+                        'pluginname',
+                        'block_custom_course_menu'
+                    ),
+                    get_string(
+                        'privacy:metadata:block_custom_course_menu:block_custom_course_menu:textcontext',
+                        'block_custom_course_menu'
+                    ),
+                ];
                 writer::with_context($usercontext)->export_data($strings, (object)['block_custom_course_menu' => $entries]);
             }
-            $entries = $DB->get_records('block_custom_course_menu_etc', array('userid' => $userid));
+            $entries = $DB->get_records('block_custom_course_menu_etc', ['userid' => $userid]);
             if (!empty($entries)) {
                 $usercontext = $usercontexts[\context_user::instance($userid)->id];
-                $strings = [get_string('pluginname', 'block_custom_course_menu'),
-                            get_string('privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:textcontext',
-                                       'block_custom_course_menu')];
+                $strings = [
+                    get_string(
+                        'pluginname',
+                        'block_custom_course_menu'
+                    ),
+                    get_string(
+                        'privacy:metadata:block_custom_course_menu:block_custom_course_menu_etc:textcontext',
+                        'block_custom_course_menu'
+                    ),
+                ];
                 writer::with_context($usercontext)->export_data($strings, (object)['block_custom_course_menu_etc' => $entries]);
             }
         }
@@ -172,8 +187,8 @@ class provider implements
             return;
         }
         $userid = $context->instanceid;
-        $DB->delete_records('block_custom_course_menu', array('userid' => $userid));
-        $DB->delete_records('block_custom_course_menu_etc', array('userid' => $userid));
+        $DB->delete_records('block_custom_course_menu', ['userid' => $userid]);
+        $DB->delete_records('block_custom_course_menu_etc', ['userid' => $userid]);
     }
 
     /**
@@ -225,7 +240,7 @@ class provider implements
      * @return mixed of contexts.
      */
     protected static function validate_contextlist_contexts(approved_contextlist $contextlist, $contextlevellist) {
-        return array_reduce($contextlist->get_contexts(), function($carry, $context) use($contextlevellist) {
+        return array_reduce($contextlist->get_contexts(), function ($carry, $context) use ($contextlevellist) {
             if (in_array($context->contextlevel, $contextlevellist)) {
                 $carry[$context->id] = $context;
             }
