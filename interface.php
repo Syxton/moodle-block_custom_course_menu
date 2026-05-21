@@ -344,7 +344,7 @@ function get_last_viewed() {
 /**
  * Returns a list of the most recently courses accessed by a user
  *
- * @param int $userid User id from which the courses will be obtained
+ * @param int|null $userid User id from which the courses will be obtained
  * @param int $limit Restrict result set to this amount
  * @return array
  */
